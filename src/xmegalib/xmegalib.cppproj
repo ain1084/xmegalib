@@ -1,0 +1,787 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>7.0</ProjectVersion>
+    <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
+    <ProjectGuid>{bad379b6-a0e0-466e-b9a8-4c4b2a4e4078}</ProjectGuid>
+    <avrdevice>ATxmega128A4U</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>StaticLibrary</OutputType>
+    <Language>CPP</Language>
+    <OutputFileName>lib$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.a</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AvrGccProjectExtensions>
+    </AvrGccProjectExtensions>
+    <AssemblyName>xmegalib</AssemblyName>
+    <Name>xmegalib</Name>
+    <RootNamespace>xmegalib</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
+    <UncachedRange />
+    <preserveEEPROM>true</preserveEEPROM>
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <BootSegment>2</BootSegment>
+    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <AsfFrameworkConfig>
+      <framework-data xmlns="">
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.28.1" />
+        </dependencies>
+      </framework-data>
+    </AsfFrameworkConfig>
+    <avrtool />
+    <avrtoolinterface />
+    <ResetRule>0</ResetRule>
+    <EraseKey />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+        <avrgcc.common.Device>-mmcu=atxmega128a4u -B "%24(PackRepoDir)\atmel\XMEGAA_DFP\1.0.39\gcc\dev\atxmega128a4u"</avrgcc.common.Device>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>NDEBUG</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.0.39\include</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.OtherFlags>-frename-registers</avrgcc.compiler.optimization.OtherFlags>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>NDEBUG</Value>
+          </ListValues>
+        </avrgcccpp.compiler.symbols.DefSymbols>
+        <avrgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(MSBuildProjectDirectory)</Value>
+            <Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.0.39\include</Value>
+          </ListValues>
+        </avrgcccpp.compiler.directories.IncludePaths>
+        <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+        <avrgcccpp.compiler.optimization.OtherFlags>-frename-registers</avrgcccpp.compiler.optimization.OtherFlags>
+        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcccpp.compiler.optimization.DebugLevel>Maximum (-g3)</avrgcccpp.compiler.optimization.DebugLevel>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-std=c++11 -s</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </avrgcccpp.linker.libraries.Libraries>
+        <avrgcccpp.assembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.0.39\include</Value>
+          </ListValues>
+        </avrgcccpp.assembler.general.IncludePaths>
+      </AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+        <avrgcc.common.Device>-mmcu=atxmega128a4u -B "%24(PackRepoDir)\atmel\XMEGAA_DFP\1.0.39\gcc\dev\atxmega128a4u"</avrgcc.common.Device>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>DEBUG</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.0.39\include</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.general.SubroutinesFunctionPrologues>True</avrgcccpp.compiler.general.SubroutinesFunctionPrologues>
+        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>DEBUG</Value>
+          </ListValues>
+        </avrgcccpp.compiler.symbols.DefSymbols>
+        <avrgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(MSBuildProjectDirectory)</Value>
+            <Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.0.39\include</Value>
+          </ListValues>
+        </avrgcccpp.compiler.directories.IncludePaths>
+        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-std=c++11</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </avrgcccpp.linker.libraries.Libraries>
+        <avrgcccpp.assembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.0.39\include</Value>
+          </ListValues>
+        </avrgcccpp.assembler.general.IncludePaths>
+        <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+      </AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Audio" />
+    <Folder Include="Audio\WaveFile" />
+    <Folder Include="Collections" />
+    <Folder Include="Device" />
+    <Folder Include="Device\Display" />
+    <Folder Include="Device\Display\IL9325" />
+    <Folder Include="FileSystem" />
+    <Folder Include="FileSystem\FAT" />
+    <Folder Include="FileSystem\FAT\FatFs" />
+    <Folder Include="FileSystem\FAT\FatFs\unicode" />
+    <Folder Include="FileSystem\IndexTable" />
+    <Folder Include="Graphics" />
+    <Folder Include="XMEGA" />
+    <Folder Include="Utilities" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\IMixer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\IPlayer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\ISampleGenerator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\ISampleRenderer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\ISerialSampleRenderer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\Metadata.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\MixerCollection.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\MixerCollection.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\SampleBuffer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\SampleBuffer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\SampleData.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\SPDIFSubFrame.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\WaveFile\HeaderInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\WaveFile\HeaderInfoParser.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\WaveFile\HeaderInfoParser.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\WaveFile\Player.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\WaveFile\Player.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\WaveFile\SampleGenerator.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio\WaveFile\SampleGenerator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Collections\Stack.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Collections\Vector.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\AT45DB.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\AT45DB.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\CS2200.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\CS2200.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\CS8406.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\CS8406.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\CS8406AudioMixer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\CS8406AudioMixer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IGraphicDisplay.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\AT020QVS164ControlPort.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\AT020QVS164ControlPort.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IIL9325ControlPort.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IIL9325Orientation.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325GraphicDisplay.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325GraphicDisplay.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325OrientationRotate0.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325OrientationRotate0.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325OrientationRotate180.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325OrientationRotate180.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325OrientationRotate270.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325OrientationRotate270.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325OrientationRotate90.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\IL9325\IL9325OrientationRotate90.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\SSD1322GraphicDisplay.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\SSD1322GraphicDisplay.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\SSD1322GraphicDisplayImpl.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\SSD1322GraphicDisplayImpl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\TextLCD.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\Display\TextLCD.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\IEEPROM.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\II2CMaster.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\IInputPin.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\IIntervalTimerNotify.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\IIOPort.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\IMemoryReader.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\IOutputPin.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\ISPIChip.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\ISRAM.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\LEDPin.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\LM49450AudioMixer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\LM49450AudioMixer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\MAX9850AudioMixer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\MAX9850AudioMixer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\PCM1770AudioMixer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\PCM1770AudioMixer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\PushButton.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\PushButton.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\RepeatButton.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\RepeatButton.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\SRAM23K.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\SRAM23K.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\SSD1322.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\SSD1322.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\XRA1200.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\XRA1200.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\XRA1200InputPin.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device\XRA1200InputPin.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\Enumerator.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\Enumerator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\DirectoryInfo.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\DirectoryInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\diskio.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\diskio.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\DiskIOManager.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\DiskIOManager.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\DiskVolume.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\FatFs\diskio.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\FatFs\ff.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\FatFs\ff.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\FatFs\ffconf.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\FatFs\integer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\FatFs\unicode\cc932_avr.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\File.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\File.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\FileInfo.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\FileInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\IDiskIO.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\MMCDiskIO.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\FAT\MMCDiskIO.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IDirectoryInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IEnumerator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IFile.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IFileInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IFileSystemInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\BlockSource.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\BlockSource.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\DirectoryInfo.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\DirectoryInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\File.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\File.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\FileBlockSource.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\FileBlockSource.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\FileInfo.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\FileInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\IBlockSource.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\ImageBuilder.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\ImageBuilder.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\IndexBlockSource.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\IndexBlockSource.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="FileSystem\IndexTable\IndexEntry.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphics\Context.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphics\Context.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphics\Font.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphics\Font.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphics\FontDataManager.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphics\FontDataManager.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphics\FontXFontData.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphics\FontXFontData.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphics\IFontData.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Platform.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicString.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicString.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\MultiByteString.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\MultiByteString.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\Path.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\Path.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\ScopedPtr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\SharedPtr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\StringUtilities.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\StringUtilities.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\AT020QVSParallelPort.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\AT020QVSParallelPort.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\AT020QVSVirtualPort.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\AT020QVSVirtualPort.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\Endian.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\GPIO.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\GPIO.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\GPIOI2CMaster.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\GPIOI2CMaster.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SPDIFFrameEncoder.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SPDIFFrameEncoder.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SPDIFFrame.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\CriticalSection.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\DMAInfo.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\DMAInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\EventChannelMultiplexerInput.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\EventChannelMultiplexerInput.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\FlashROMFontData.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\FlashROMFontData.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\FlashROMReader.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\FlashROMReader.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\I2CMaster.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\I2CMaster.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\InputPin.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\InputPin.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\InterruptController.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\InterruptController.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\IntervalTimer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\IntervalTimer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\ISystemClockNotify.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\Mutex.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\MutexSection.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\OutputPin.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\OutputPin.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\Platform.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\Platform.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\PortInfo.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\PortInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SerialAudioSampleRenderer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SerialAudioSampleRenderer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SPDIFAudioSampleRenderer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SPDIFAudioSampleRenderer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SPIChip.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SPIChip.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SPIMaster.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SPIMaster.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SystemClock.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SystemClock.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SystemClockCounter.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SystemClockCounter.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SystemClockTimer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\SystemClockTimer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\TimerCounter0Info.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\TimerCounter0Info.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\TimerCounter1Info.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\TimerCounter1Info.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\USARTInfo.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XMEGA\USARTInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FileSystem\FAT\FatFs\00readme.txt">
+      <SubType>compile</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>
