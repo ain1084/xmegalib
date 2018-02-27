@@ -16,7 +16,7 @@ C++ class library for Atmel ATxmega.
 - S/PDIF audio sample encoder using SPI
 - AT020QVS LCD module
 
-### external devices
+### External devices
 
 - AT45DBxx (DataFlash)
 - CS2200 (PLL)
