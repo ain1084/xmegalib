@@ -3,17 +3,14 @@ C++ class library for Atmel ATxmega.
 
 ## Implemented functions
 
-### ATxmega peripheral classes
+### ATxmega classes
 
 - SPI master (MSPI)
 - I2C master
 - I2C master (GPIO)
 - Timer
-
-### ATxmega dependent classes
-
-- I2S/LPCM audio sample encoder using SPI
-- S/PDIF audio sample encoder using SPI
+- I2S/LPCM audio sample encoder (using SPI)
+- S/PDIF audio sample encoder (using SPI)
 - AT020QVS LCD module
 
 ### External device classes
