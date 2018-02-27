@@ -34,4 +34,4 @@ C++ class library for Atmel ATxmega.
 
 ## Sample board photo
 
-![BOARD](https://github.com/ain1084/xmegalib/blob/images/board.png)
+![BOARD](https://github.com/ain1084/xmegalib/blob/master/board.png)
