@@ -9,25 +9,27 @@ C++ class library for Atmel ATxmega.
 - I2C master
 - I2C master (GPIO)
 - Timer
-- I2S/LPCM audio sample encoder (using SPI)
-- S/PDIF audio sample encoder (using SPI)
-- AT020QVS LCD module
+- I2S/LPCM audio sample encoder (using MSPI)
+- S/PDIF audio sample encoder (using MSPI)
 
 ### External device classes
 
 - AT45DBxx (DataFlash)
 - CS2200 (PLL Clock Synthesizer)
-- CS8406 (Digital audio transmitter)
-- LM49450 (DAC)
-- MAX9850 (DAC)
-- PCM1770A (DAC)
 - XRA1200 (I2C I/O expander)
 - SRAM23K (Serial SRAM)
-- SSD1322 (Display controller)
-- IL9325 (Display controller)
 - Push button
 - FAT file system (Read access only)
 - Microsd card accessor
+- Audio
+  - LM49450
+  - MAX9850
+  - PCM1770A
+  - CS8406 (Digital audio transmitter)
+- Display
+  - SSD1322
+  - IL9325
+  - HD44780
 
 ### audio classes
 
