@@ -11,6 +11,8 @@ C++ class library for Atmel ATxmega.
 - Timer
 - I2S/LPCM audio sample encoder (using MSPI)
 - S/PDIF audio sample encoder (using MSPI)
+- FAT file system (Read access only)
+- Indexed file system (for DataFlash)
 
 ### External device classes
 
@@ -19,7 +21,6 @@ C++ class library for Atmel ATxmega.
 - XRA1200 (I2C I/O expander)
 - SRAM23K (Serial SRAM)
 - Push button
-- FAT file system (Read access only)
 - Microsd card accessor
 - Audio
   - LM49450
@@ -30,13 +31,15 @@ C++ class library for Atmel ATxmega.
   - SSD1322
   - IL9325
   - HD44780
+- Font
+
 
 ### audio classes
 
-- sample renderer
-- smaple buffer
-- mixier
-- windows wave file parser
+- Sample renderer
+- Smaple buffer
+- Mixier
+- MS-Windows wave file parser
 
 ### utility classes
 
