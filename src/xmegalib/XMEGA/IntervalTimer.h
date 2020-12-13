@@ -37,11 +37,10 @@ namespace XMEGA
 			virtual void Stop(void) = 0;
 		};
 	
-		template<typename T>
-		class Timer : public ITimer
+		class Timer0 : public ITimer
 		{
 		public:
-			Timer(volatile T& timer, TC_OVFINTLVL_t level)
+			Timer0(volatile TC0_t& timer, TC_OVFINTLVL_t level)
 			 : _timer(timer)
 			 , _clksel(TC_CLKSEL_OFF_gc)
 			{
@@ -49,7 +48,7 @@ namespace XMEGA
 				_timer.CTRLA = TC_CLKSEL_OFF_gc;
 				_timer.INTCTRLA = level;
 			}
-			virtual ~Timer(void)
+			virtual ~Timer0(void)
 			{
 				CriticalSection cs;
 				_timer.CTRLA = TC_CLKSEL_OFF_gc;
@@ -71,7 +70,44 @@ namespace XMEGA
 				_timer.CTRLA = TC_CLKSEL_OFF_gc;
 			}
 		private:
-			volatile T& _timer;
+			volatile TC0_t& _timer;
+			TC_CLKSEL_t _clksel;
+		};
+
+		class Timer1 : public ITimer
+		{
+			public:
+			Timer1(volatile TC1_t& timer, TC_OVFINTLVL_t level)
+			: _timer(timer)
+			, _clksel(TC_CLKSEL_OFF_gc)
+			{
+				CriticalSection cs;
+				_timer.CTRLA = TC_CLKSEL_OFF_gc;
+				_timer.INTCTRLA = level;
+			}
+			virtual ~Timer1(void)
+			{
+				CriticalSection cs;
+				_timer.CTRLA = TC_CLKSEL_OFF_gc;
+				_timer.INTCTRLA = TC_OVFINTLVL_OFF_gc;
+			}
+			virtual void SetPeriod(TC_CLKSEL_t clksel, uint16_t period)
+			{
+				CriticalSection cs;
+				_clksel = clksel;
+				_timer.PER = period;
+				_timer.CTRLA = _clksel;
+			}
+			virtual void Start()
+			{
+				_timer.CTRLA = _clksel;
+			}
+			virtual void Stop()
+			{
+				_timer.CTRLA = TC_CLKSEL_OFF_gc;
+			}
+			private:
+			volatile TC1_t& _timer;
 			TC_CLKSEL_t _clksel;
 		};
 

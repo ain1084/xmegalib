@@ -32,6 +32,8 @@
 
 using namespace FileSystem;
 
+#define SPDIF_OUTPUT		// S/PDIF output PD2
+
 void start(AudioPlayerCreator& playerCreator, Device::PushButton& nextButton)
 {
 	// key scan timer
@@ -173,16 +175,20 @@ int main(void)
 
 	XMEGA::InputPin userButtonPin(PORTD, PIN5_bp);
 	Device::PushButton userButton(userButtonPin);
-	
-	XMEGA::SerialAudioSampleRenderer renderer(USARTD0, DMADoubleBufferMode::Channel_2_3, TCD0, TCD1, samplingRate, 256, Audio::ISerialSampleRenderer::Format::Format_I2S);//::Format_LeftJustified);
-//	XMEGA::SPDIFAudioSampleRenderer renderer(USARTD0, DMADoubleBufferMode::Channel_2_3, TCD0, samplingRate);
 
+#if defined(SPDIF_OUTPUT)
+	XMEGA::SPDIFAudioSampleRenderer renderer(USARTD0, DMADoubleBufferMode::Channel_2_3, TCD0, samplingRate);
+#else
+	XMEGA::SerialAudioSampleRenderer renderer(USARTD0, DMADoubleBufferMode::Channel_2_3, TCD0, TCD1, samplingRate, 256, Audio::ISerialSampleRenderer::Format::Format_I2S);//::Format_LeftJustified);
+
+	//DAC1
  	Device::MAX9850AudioMixer mixier1(renderer, i2cMaster, 0x10);
 	mixier1.SetVolume(60);
 
+	//DAC2
 	Device::LM49450AudioMixer mixier2(renderer, i2cMaster, 0x7d);
 	mixier2.SetVolume(50);
-
+#endif
 	AudioPlayerCreator playerCreator(renderer);
 		
 	start(playerCreator, userButton);
