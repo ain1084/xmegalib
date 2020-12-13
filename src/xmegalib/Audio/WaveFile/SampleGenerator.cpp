@@ -36,7 +36,7 @@ void SampleGenerator::Reset(void)
 	if (readNextSector(offsetInSector, _headerInfo.dataCount))
 	{
 		CriticalSection cs;
-		dataSizeCountdown = _headerInfo.dataCount - _bufferRemain;
+		_dataSizeCountdown = _headerInfo.dataCount - _bufferRemain;
 	}		
 }
 
