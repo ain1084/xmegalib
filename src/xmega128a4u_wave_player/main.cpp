@@ -32,7 +32,7 @@
 
 using namespace FileSystem;
 
-#define SPDIF_OUTPUT		// S/PDIF output PD2
+//#define SPDIF_OUTPUT		// S/PDIF output PD2
 
 void start(AudioPlayerCreator& playerCreator, Device::PushButton& nextButton)
 {

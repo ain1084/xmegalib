@@ -44,10 +44,10 @@ namespace Audio
 			uint8_t* _pReadNext;
 			uint_fast16_t _nextReadSize;
 			uint_fast16_t _bufferRemain;
-			uint8_t _buffer[SECTOR_SIZE];
+			uint8_t _buffer[SECTOR_SIZE * 2];
 			bool _isDiskError;
 
-			bool readNextSector(uint16_t offsetInSector, uint_fast32_t dataSizeCount);
+			bool readNextSector(uint_fast16_t offsetInSector, uint_fast32_t maxSize);
 		};
 	}
 }
