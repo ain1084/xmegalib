@@ -65,9 +65,8 @@ namespace
 	};
 }
 
-
 IntervalTimer::IntervalTimer(volatile TC0_t& timer, IIntervalTimerNotify& notify, TC_OVFINTLVL_t level)
- : _pTimer(new Timer<TC0_t>(timer, level))
+ : _pTimer(new Timer0(timer, level))
  , _notify(notify)
  , _cause(findCause<TC0_t>(timerToCause0, timer))
 {
@@ -75,7 +74,7 @@ IntervalTimer::IntervalTimer(volatile TC0_t& timer, IIntervalTimerNotify& notify
 }
 
 IntervalTimer::IntervalTimer(volatile TC1_t& timer, IIntervalTimerNotify& notify, TC_OVFINTLVL_t level)
- : _pTimer(new Timer<TC1_t>(timer, level))
+ : _pTimer(new Timer1(timer, level))
  , _notify(notify)
  , _cause(findCause<TC1_t>(timerToCause1, timer))
 {

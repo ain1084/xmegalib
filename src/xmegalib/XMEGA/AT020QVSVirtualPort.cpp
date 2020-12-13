@@ -84,13 +84,3 @@ void AT020QVSVirtualPort<WRITE_PIN>::WriteRegisterRepeat(uint8_t registerNumber,
 
 	_csPin.High();
 }
-
-template class AT020QVSVirtualPort<0>;
-template class AT020QVSVirtualPort<1>;
-template class AT020QVSVirtualPort<2>;
-template class AT020QVSVirtualPort<3>;
-template class AT020QVSVirtualPort<4>;
-template class AT020QVSVirtualPort<5>;
-template class AT020QVSVirtualPort<6>;
-template class AT020QVSVirtualPort<7>;
-
