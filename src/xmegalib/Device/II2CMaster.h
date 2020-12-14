@@ -19,6 +19,6 @@ namespace Device
 		virtual bool Write(uint8_t address, const uint8_t buffer[], unsigned length) = 0;
 		virtual bool Read(uint8_t address, uint8_t buffer[], unsigned length) = 0;
 		virtual bool WriteRead(uint8_t address, const uint8_t write[], unsigned writeLength, uint8_t read[], unsigned readLength) = 0;
-		virtual void Stop(void) = 0;
+		virtual bool WriteRegister(uint8_t address, uint8_t registerAddress, uint8_t value) = 0;
 	};	
 }

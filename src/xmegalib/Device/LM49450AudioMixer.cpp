@@ -70,8 +70,7 @@ void LM49450AudioMixer::writeRegister(uint8_t address, uint8_t data)
 	uint8_t writeData[2];
 	writeData[0] = address;
 	writeData[1] = data;
-	_i2cMaster.Write(_id, writeData, sizeof(writeData));
-	_i2cMaster.Stop();
+	_i2cMaster.WriteRegister(_id, address, data);
 }
 
 const LM49450AudioMixer::InitializeParameters* LM49450AudioMixer::findParameter(uint32_t samplingRate, unsigned int masterClockRatio)

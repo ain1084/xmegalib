@@ -5,12 +5,12 @@
  *  Author: Seiji Ainoguchi
  */ 
 
-#include "SPDIFFrame.h"
+#include "Audio/SPDIFFrame.h"
 #include "Audio/SampleData.h"
 #include "SPDIFFrameEncoder.h"
-#include <string.h>
 
 using namespace XMEGA;
+using namespace Audio;
 
 namespace
 {
@@ -32,7 +32,7 @@ void SPDIFFrameEncoder::encodeSubFrame(uint8_t preamble, int audio, SPDIFSubFram
 	auto audioLow = static_cast<uint8_t>(audio & 0xFF);
 	subFrame.Audio[1] = _lowNibbleCodedTable[audioLow & 0xF];
 	subFrame.Audio[2] = _codedTable[audioLow];
-	auto polarity = (subFrame.Audio[2] & 1) ? 0xFF : 0x00;
+	auto polarity = static_cast<uint8_t>(0x00 - (subFrame.Audio[2] & 1));
 
 	auto audioHigh = static_cast<uint8_t>((static_cast<uint16_t>(audio) >> 8) & 0xFF);
 	subFrame.Audio[3] = _lowNibbleCodedTable[audioHigh & 0xF] ^ polarity;
@@ -43,10 +43,11 @@ void SPDIFFrameEncoder::encodeSubFrame(uint8_t preamble, int audio, SPDIFSubFram
 void SPDIFFrameEncoder::Encode(const Audio::SampleData samples[], SPDIFFrame spdifFrames[], size_t sampleCount)
 {
 	const auto* pSample = samples;
+	const auto* pSampleEnd = samples + sampleCount;
 	auto* pSpdifFrame = spdifFrames;
 
 	auto frameNumber = _frameNumber;
-	while (sampleCount-- != 0)
+	while (pSample != pSampleEnd)
 	{
 		uint8_t preamble;
 		if (frameNumber == MAX_FRAME_NUMBER)

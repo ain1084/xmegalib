@@ -77,15 +77,12 @@ bool CS2200::I2CCS2200Port::Write(uint8_t map, const uint8_t data[], unsigned co
 	buffer[0] = map;
 	memcpy(&buffer[1], data, count);
 	_i2cMaster.Write(_address, &buffer[0], buffer.GetCount());
-	_i2cMaster.Stop();
 	return true;
 }
 
 bool CS2200::I2CCS2200Port::Read(uint8_t map, uint8_t data[], unsigned count)
 {
-	_i2cMaster.WriteRead(_address, &map, 1, data, count);
-	_i2cMaster.Stop();
-	return true;
+	return _i2cMaster.WriteRead(_address, &map, 1, data, count);
 }
 
 CS2200::SPICS2200Port::SPICS2200Port(ISPIChip& spiChip)

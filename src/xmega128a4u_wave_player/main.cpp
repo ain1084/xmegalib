@@ -32,7 +32,7 @@
 
 using namespace FileSystem;
 
-//#define SPDIF_OUTPUT		// S/PDIF output PD2
+#define SPDIF_OUTPUT		// S/PDIF output PD2
 
 void start(AudioPlayerCreator& playerCreator, Device::PushButton& nextButton)
 {
@@ -117,12 +117,12 @@ void start(AudioPlayerCreator& playerCreator, Device::PushButton& nextButton)
 	}
 }
 
-#include <XMEGA/GPIOI2CMaster.h>
-
 int main(void)
  {
 	XMEGA::InterruptController::Start();
 	XMEGA::SystemClockCounter::Start();
+
+	SystemClockTimer::WaitForReached(SystemClockCounter::MStoClock(100));
 
 	const uint32_t HZ_TO_MHZ = 1000 * 1000UL;	 
 	const uint32_t REF_CLOCK = 10 * HZ_TO_MHZ;
@@ -178,6 +178,19 @@ int main(void)
 
 #if defined(SPDIF_OUTPUT)
 	XMEGA::SPDIFAudioSampleRenderer renderer(USARTD0, DMADoubleBufferMode::Channel_2_3, TCD0, samplingRate);
+
+	//LC89091JA
+	i2cMaster.WriteRegister(0x12, 0x00, 0b00001000);
+	i2cMaster.WriteRegister(0x12, 0x01, 0b00100001);
+	i2cMaster.WriteRegister(0x12, 0x00, 0b00000000);
+
+	// MAX9850
+	i2cMaster.WriteRegister(0x10, 0x06, 0b00000000);
+	i2cMaster.WriteRegister(0x10, 0x07, 8);
+	i2cMaster.WriteRegister(0x10, 0x0a, 0b00001000);
+	i2cMaster.WriteRegister(0x10, 0x02, 22);
+	i2cMaster.WriteRegister(0x10, 0x05, 0b11111101);
+
 #else
 	XMEGA::SerialAudioSampleRenderer renderer(USARTD0, DMADoubleBufferMode::Channel_2_3, TCD0, TCD1, samplingRate, 256, Audio::ISerialSampleRenderer::Format::Format_I2S);//::Format_LeftJustified);
 

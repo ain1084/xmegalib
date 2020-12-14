@@ -72,8 +72,8 @@ SerialAudioSampleRenderer::SerialAudioSampleRenderer(USART_t& dataUSART,
 	dataUSART.CTRLA = 0;
 	dataUSART.CTRLB = USART_TXEN_bm;
 	dataUSART.CTRLC = USART_CMODE_MSPI_gc;
-	dataUSART.BAUDCTRLA = static_cast<uint8_t>((usartBaud & 0xff) >> 0);
-	dataUSART.BAUDCTRLB = static_cast<uint8_t>((usartBaud & 0xff) >> 8);
+	dataUSART.BAUDCTRLA = static_cast<uint8_t>((usartBaud >> 0) & 0xff);
+	dataUSART.BAUDCTRLB = static_cast<uint8_t>((usartBaud >> 8) & 0xff);
 
 	auto& dataPort = dataUSARTInfo.GetPort();
 
@@ -290,11 +290,16 @@ void SerialAudioSampleRenderer::bufferSamplesForDMA(const DMAChannelInfo& dmaCha
 		auto p = reinterpret_cast<uint8_t*>(samples);
 		for (uint16_t i = 0; i < SampleCountEachDMABuffer; ++i)
 		{
-			//swap byte order
-			uint8_t l = *p;
-			uint8_t h = *(p + 1);
+			uint8_t l;
+			uint8_t h;
+			
+			//swap byte order (Left)
+			l = *p;
+			h = *(p + 1);
 			*p = h;
 			*(p + 1) = l;
+
+			//calculate peak level (Left)
 			if (h >= 0x80)
 			{
 				h = ~h + 1;
@@ -305,11 +310,13 @@ void SerialAudioSampleRenderer::bufferSamplesForDMA(const DMAChannelInfo& dmaCha
 			}
 			p += 2;
 
-			//swap byte order
+			//swap byte order (Right)
 			l = *p;
 			h = *(p + 1);
 			*p = h;
 			*(p + 1) = l;
+
+			//calculate peak level (Right)
 			if (h >= 0x80)
 			{
 				h = ~h + 1;

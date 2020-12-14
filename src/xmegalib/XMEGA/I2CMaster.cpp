@@ -23,7 +23,7 @@ I2CMaster::I2CMaster(TWI_t& twi, uint32_t busFrequency)
 	SystemClock::GetInstance().AddNotify(*this);
 
 	_twiMaster.CTRLA = 0;
-	_twiMaster.CTRLB = 0;//TWI_MASTER_SMEN_bm;
+	_twiMaster.CTRLB = 0;
 	_twiMaster.CTRLA = TWI_MASTER_ENABLE_bm;
 	_twiMaster.STATUS = TWI_MASTER_BUSSTATE_IDLE_gc;
 	applyBaudrate();
@@ -60,6 +60,7 @@ bool I2CMaster::WriteRead(uint8_t address, const uint8_t write[], unsigned write
 	
 	if (readLength == 0)
 	{
+		stop();
 		return true;
 	}
 
@@ -93,6 +94,7 @@ bool I2CMaster::WriteRead(uint8_t address, const uint8_t write[], unsigned write
 	while ((_twiMaster.STATUS & TWI_MASTER_BUSSTATE_gm) != TWI_MASTER_BUSSTATE_IDLE_gc)
 		;
 
+	stop();
 	return true;
 }
 
@@ -119,7 +121,7 @@ bool I2CMaster::Write(uint8_t address, const uint8_t buffer[], unsigned length)
 			return false;
 		}
 	} while (--length != 0);
-
+	stop();
 	return true;
 }	
 
@@ -129,6 +131,7 @@ bool I2CMaster::Read(uint8_t address, uint8_t buffer[], unsigned length)
 	
 	if (length == 0)
 	{
+		stop();
 		return true;
 	}
 
@@ -158,10 +161,19 @@ bool I2CMaster::Read(uint8_t address, uint8_t buffer[], unsigned length)
 			_twiMaster.CTRLC = TWI_MASTER_CMD_RECVTRANS_gc;
 		}
 	}		
+	stop();
 	return true;
 }
-	
-void I2CMaster::Stop(void)
+
+bool I2CMaster::WriteRegister(uint8_t address, uint8_t registerAddress, uint8_t value)
+{
+	uint8_t writeData[2];
+	writeData[0] = registerAddress;
+	writeData[1] = value;
+	return Write(address, writeData, sizeof(writeData));
+}
+
+void I2CMaster::stop(void)
 {
 	_twiMaster.CTRLC = TWI_MASTER_CMD_STOP_gc;
 	while ((_twiMaster.STATUS & TWI_MASTER_BUSSTATE_gm) != TWI_MASTER_BUSSTATE_IDLE_gc)
@@ -192,8 +204,5 @@ void I2CMaster::applyBaudrate(void)
 
 void I2CMaster::OnPeripheralClockChanged(uint32_t newClock)
 {
-//	_twiMaster.CTRLA = 0;
 	applyBaudrate();
-//	_twiMaster.CTRLA = TWI_MASTER_ENABLE_bm;
-//	_twiMaster.STATUS = TWI_MASTER_BUSSTATE_IDLE_gc;
 }

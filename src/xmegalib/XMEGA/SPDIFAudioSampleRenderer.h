@@ -11,7 +11,7 @@
 #include "Audio/SampleData.h"
 #include "Audio/SampleBuffer.h"
 #include "TimerCounter0Info.h"
-#include "SPDIFFrame.h"
+#include "Audio/SPDIFFrame.h"
 #include "SPDIFFrameEncoder.h"
 
 namespace XMEGA
@@ -54,7 +54,7 @@ namespace XMEGA
 		const uint32_t _samplingRate;
 		Audio::SampleBuffer _buffer;
 		Audio::ISampleGenerator* _pGenerator;
-		SPDIFFrame _DMABuffer[DMAChannelCount][SampleCountEachDMABuffer];
+		Audio::SPDIFFrame _DMABuffer[DMAChannelCount][SampleCountEachDMABuffer];
 		SPDIFFrameEncoder _spdifEncoder;
 		uint32_t _sampleCount;
 		uint8_t _peakLevelL;
@@ -64,8 +64,10 @@ namespace XMEGA
 
 		static void dmaTransferCompleted(void* pContext);
 		static void timerOverflow(void* pContext);
-		static void initDMA(volatile DMA_CH_t& dmaChannel, const USARTInfo& usartInfo, SPDIFFrame spdifFrame[], size_t sampleCount);
+		static void setupDMA(volatile DMA_CH_t& dmaChannel, Audio::SPDIFFrame spdifFrame[]);
 		void bufferSamplesForDMA(volatile DMA_CH_t& dmaCh, uint8_t bufferNumber);
 		void initBuffer(uint_fast8_t channelNumber);
+		void startDMA(void);
+		void stopDMA(void);
 	};
 }

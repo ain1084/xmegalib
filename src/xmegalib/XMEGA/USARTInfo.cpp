@@ -32,7 +32,7 @@ const USARTInfo::PortInfo USARTInfo::_portInfos[] =
 	#endif
 };
 
-USARTInfo::USARTInfo(USART_t& usart)
+USARTInfo::USARTInfo(volatile USART_t& usart)
 {
 	for (const PortInfo* p = _portInfos;; p++)
 	{

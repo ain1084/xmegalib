@@ -72,11 +72,7 @@ void MAX9850AudioMixer::applyVolume(void)
 	writeRegister(0x02, val);
 }
 
-void MAX9850AudioMixer::writeRegister(uint8_t address, uint8_t data)
+void MAX9850AudioMixer::writeRegister(uint8_t address, uint8_t value)
 {
-	uint8_t writeData[2];
-	writeData[0] = address;
-	writeData[1] = data;
-	_i2cMaster.Write(_id, writeData, sizeof(writeData));
-	_i2cMaster.Stop();
+	_i2cMaster.WriteRegister(_id, address, value);
 }

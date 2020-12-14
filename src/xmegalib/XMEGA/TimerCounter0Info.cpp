@@ -35,7 +35,7 @@ const TimerCounter0Info::TimerInfo TimerCounter0Info::_timerInfos[] =
 #endif
 };
 
-TimerCounter0Info::TimerCounter0Info(TC0_t& timer)
+TimerCounter0Info::TimerCounter0Info(volatile TC0_t& timer)
 {
 	for (const TimerInfo* p = _timerInfos;; p++)
 	{

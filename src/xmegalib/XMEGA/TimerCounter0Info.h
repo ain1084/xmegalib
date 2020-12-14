@@ -15,7 +15,7 @@ namespace XMEGA
 	class TimerCounter0Info
 	{
 	public:
-		TimerCounter0Info(TC0_t& timer);	
+		TimerCounter0Info(volatile TC0_t& timer);	
 
 		TC0_t& GetTimer(void) const
 		{

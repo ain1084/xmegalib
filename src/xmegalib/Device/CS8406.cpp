@@ -92,29 +92,12 @@ bool CS8406::I2C_CS8406Port::Write(uint8_t address, uint8_t data)
 	buffer[0] = address;
 	buffer[1] = data;
 
-	if (!_i2cMaster.Write(_address, buffer, 2))
-	{
-		return false;
-	}
-	_i2cMaster.Stop();
-	return true;
+	return _i2cMaster.WriteRegister(_address, address, data);
 }
 
-bool CS8406::I2C_CS8406Port::Read(uint8_t address, uint8_t& data)
+bool CS8406::I2C_CS8406Port::Read(uint8_t registerAddress, uint8_t& data)
 {
-	uint8_t buffer[1];
-	buffer[0] = address;
-
-	if (!_i2cMaster.Write(_address, buffer, 1))
-	{
-		return false;
-	}
-	if (!_i2cMaster.Read(_address, buffer, 1))
-	{
-		_i2cMaster.Stop();
-		return false;
-	}
-	return true;
+	return _i2cMaster.WriteRead(_address, &registerAddress, 1, &data, 1);
 }
 
 CS8406::SPI_CS8406Port::SPI_CS8406Port(ISPIChip& spiChip)

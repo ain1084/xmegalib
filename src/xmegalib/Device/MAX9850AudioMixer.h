@@ -32,7 +32,7 @@ namespace Device
 		const uint8_t _id;
 		int _volume;
 
-		void writeRegister(uint8_t address, uint8_t data);
+		void writeRegister(uint8_t address, uint8_t value);
 		void applyVolume(void);
 	};
 }
