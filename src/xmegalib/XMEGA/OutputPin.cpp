@@ -6,7 +6,6 @@
  */ 
 
 #include "Platform.h"
-#include <avr/io.h>
 #include "OutputPin.h"
 
 using namespace XMEGA;

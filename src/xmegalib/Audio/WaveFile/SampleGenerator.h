@@ -36,7 +36,7 @@ namespace Audio
 		private:
 			enum
 			{
-				SECTOR_SIZE = 512
+				SECTOR_SIZE = 512 * 2
 			};
 			FileSystem::IFile& _file;
 			const HeaderInfo _headerInfo;

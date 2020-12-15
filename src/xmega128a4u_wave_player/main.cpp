@@ -179,7 +179,7 @@ int main(void)
 #if defined(SPDIF_OUTPUT)
 	XMEGA::SPDIFAudioSampleRenderer renderer(USARTD0, DMADoubleBufferMode::Channel_2_3, TCD0, samplingRate);
 
-	//LC89091JA
+	//LC89091JA 256fs
 	i2cMaster.WriteRegister(0x12, 0x00, 0b00001000);
 	i2cMaster.WriteRegister(0x12, 0x01, 0b00100001);
 	i2cMaster.WriteRegister(0x12, 0x00, 0b00000000);

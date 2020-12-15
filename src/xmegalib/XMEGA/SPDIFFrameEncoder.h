@@ -27,9 +27,5 @@ namespace XMEGA
 
 	private:
 		uint_fast8_t _frameNumber;
-		static const uint8_t _lowNibbleCodedTable[16];
-		static const uint8_t _codedTable[256];
-
-		static void encodeSubFrame(uint8_t preamble, int audio, Audio::SPDIFSubFrame& bmcSubFrame);
 	};
 }

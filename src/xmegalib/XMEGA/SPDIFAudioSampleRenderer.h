@@ -44,7 +44,7 @@ namespace XMEGA
 
 		enum
 		{
-			SampleCountEachDMABuffer = 32,
+			SampleCountEachDMABuffer = 64,
 			DMAChannelCount = 2
 		};
 
