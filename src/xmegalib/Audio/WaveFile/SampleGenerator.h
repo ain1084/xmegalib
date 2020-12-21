@@ -36,7 +36,7 @@ namespace Audio
 		private:
 			enum
 			{
-				SECTOR_SIZE = 512
+				SECTOR_SIZE = 512 * 2
 			};
 			FileSystem::IFile& _file;
 			const HeaderInfo _headerInfo;
@@ -47,7 +47,7 @@ namespace Audio
 			uint8_t _buffer[SECTOR_SIZE];
 			bool _isDiskError;
 
-			bool readNextSector(uint16_t offsetInSector, uint_fast32_t dataSizeCount);
+			bool readNextSector(uint_fast16_t offsetInSector, uint_fast32_t maxSize);
 		};
 	}
 }

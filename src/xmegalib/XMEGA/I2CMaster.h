@@ -23,7 +23,7 @@ namespace XMEGA
 		virtual bool Write(uint8_t address, const uint8_t buffer[], unsigned length);
 		virtual bool Read(uint8_t address, uint8_t buffer[], unsigned length);
 		virtual bool WriteRead(uint8_t address, const uint8_t write[], unsigned writeLength, uint8_t read[], unsigned readLength);
-		virtual void Stop(void);
+		virtual bool WriteRegister(uint8_t address, uint8_t registerAddress, uint8_t value);
 		
 	protected:
 		virtual void OnPeripheralClockChanged(uint32_t newClock);
@@ -33,5 +33,6 @@ namespace XMEGA
 		const uint32_t _busFrequency;
 
 		void applyBaudrate(void);
+		void stop(void);
 	};
 }

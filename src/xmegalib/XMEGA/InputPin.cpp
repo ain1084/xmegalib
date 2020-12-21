@@ -1,11 +1,11 @@
 /*
- * Program1.cpp
+ * InputPin.cpp
  *
  * Created: 2011/12/12 2:06:43
  *  Author: Seiji Ainoguchi
  */ 
 
-#include <avr/io.h>
+#include "Platform.h"
 #include "InputPin.h"
 
 using namespace XMEGA;

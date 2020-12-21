@@ -5,8 +5,9 @@
  *  Author: Seiji Ainoguchi
  */ 
 
-#include "Platform.h"
 #include <string.h>
+#include <limits.h>
+#include "Platform.h"
 #include "Audio/ISampleGenerator.h"
 #include "SystemClock.h"
 #include "InterruptController.h"
@@ -15,12 +16,6 @@
 #include "TimerCounter1Info.h"
 #include "DMAInfo.h"
 #include "SPDIFAudioSampleRenderer.h"
-
-namespace
-{
-	const int CHANNELS = 2;
-	const int SAMPLE_BITS = 16;
-}
 
 using namespace XMEGA;
 using namespace Audio;
@@ -39,60 +34,47 @@ SPDIFAudioSampleRenderer::SPDIFAudioSampleRenderer(USART_t& dataUSART,
  , _peakLevelR(0)
  , _pause(false)
  , _running(false)
-{
-	USARTInfo dataUSARTInfo(dataUSART);
-	TimerCounter0Info lrClockTimerInfo(lrClockTimer);
-	
-	const auto peripheralClock = SystemClock::GetInstance().GetPeripheralClock();
-	
+{	
 	CriticalSection cs;
 	
-	auto clockPerFrame = sizeof(SPDIFFrame) * 8;
+	//Initialize USART for S/PDIF output
+	auto clockPerFrame = sizeof(SPDIFFrame) * CHAR_BIT;
 	auto sclkRate  = samplingRate * clockPerFrame;
+	auto peripheralClock = SystemClock::GetInstance().GetPeripheralClock();
 	auto usartBaud = static_cast<uint16_t>((peripheralClock / sclkRate) / 2 - 1);	
 	dataUSART.CTRLA = 0;
 	dataUSART.CTRLB = USART_TXEN_bm;
 	dataUSART.CTRLC = USART_CMODE_MSPI_gc;
-	dataUSART.BAUDCTRLA = static_cast<uint8_t>((usartBaud & 0xff) >> 0);
-	dataUSART.BAUDCTRLB = static_cast<uint8_t>((usartBaud & 0xff) >> 8);
-
-
-	//TXD0 (output)
+	dataUSART.BAUDCTRLA = static_cast<uint8_t>((usartBaud & 0x00ff) >> 0);
+	dataUSART.BAUDCTRLB = static_cast<uint8_t>((usartBaud & 0xff00) >> 8);
+	USARTInfo dataUSARTInfo(dataUSART);
 	auto& dataPort = dataUSARTInfo.GetPort();
 	dataPort.DIRSET = dataUSARTInfo.GetTXDBitMask();
 
-	//LRCLK
+	//Initialize timer for LRCLK
 	lrClockTimer.CTRLA = TC_CLKSEL_DIV1_gc;
-	lrClockTimer.CTRLB = TC_WGMODE_FRQ_gc | TC1_CCAEN_bm;
+	lrClockTimer.CTRLB = TC_WGMODE_FRQ_gc;
 	lrClockTimer.CTRLC = 0;
 	lrClockTimer.CTRLD = 0;
 	lrClockTimer.CNT = 0;
 	lrClockTimer.CCA = clockPerFrame * SampleCountEachDMABuffer * (usartBaud + 1);
+	lrClockTimer.INTCTRLA = TC_OVFINTLVL_LO_gc;
 	
-	DMA_CTRL |= DMA_ENABLE_bm | _dmaDoubleBufferInfo.dbufMode;
-
-	for (int i = 0; i < 2; ++i)
+	//initialize interrupt DMA, timer
+	for (auto i = 0; i < 2; ++i)
 	{
 		auto& dmaChannelInfo = _dmaDoubleBufferInfo.Channels[i];
-		initDMA(dmaChannelInfo.IO, dataUSARTInfo, _DMABuffer[i], SampleCountEachDMABuffer);
 		InterruptController::SetService(dmaChannelInfo.InterruptCause, dmaTransferCompleted, this);
 	}
-	InterruptController::SetService(lrClockTimerInfo.GetOverflowInterruptCause(), timerOverflow, this);
-
-	auto& firstDmaChannel = _dmaDoubleBufferInfo.Channels[0];
-	#if defined(DMA_CH_CHEN_bm)
-	firstDmaChannel.IO.CTRLA |= DMA_CH_CHEN_bm;
-	#else
-	firstDmaChannel.IO.CTRLA |= DMA_CH_ENABLE_bm;
-	#endif
+	InterruptController::SetService(TimerCounter0Info(lrClockTimer).GetOverflowInterruptCause(), timerOverflow, this);
 }
 
 SPDIFAudioSampleRenderer::~SPDIFAudioSampleRenderer(void)
 {
 	CriticalSection cs;
 
-	DMA_CTRL &=  ~_dmaDoubleBufferInfo.dbufMode;
-	for (int i = 0; i < 2; ++i)
+	Stop();
+	for (auto i = 0; i < 2; ++i)
 	{
 		auto& dmaChannelInfo = _dmaDoubleBufferInfo.Channels[i];
 		dmaChannelInfo.IO.CTRLA = 0;
@@ -111,24 +93,29 @@ SPDIFAudioSampleRenderer::~SPDIFAudioSampleRenderer(void)
 
 void SPDIFAudioSampleRenderer::Start(ISampleGenerator& generator)
 {
+	CriticalSection cs;
+
 	Stop();
 
-	CriticalSection cs;
-	{
-		_sampleCount = 0;
-		_peakLevelL = 0;
-		_peakLevelR = 0;
-		_pause = false;
-		_running = true;
-		_buffer.Reset(generator);		
-		_buffer.Fill(generator);
-		_pGenerator = &generator;
-	}
+	_sampleCount = 0;
+	_peakLevelL = 0;
+	_peakLevelR = 0;
+	_pause = false;
+	_running = true;
+	_buffer.Reset(generator);		
+	_buffer.Fill(generator);
+	_pGenerator = &generator;
+
+	_lrClockTimer.CTRLB |= TC1_CCAEN_bm;
+	startDMA();
 }
 
 void SPDIFAudioSampleRenderer::Stop(void)
 {
 	CriticalSection cs;
+
+	stopDMA();
+	_lrClockTimer.CTRLB &= ~TC1_CCAEN_bm;
 	_buffer.Reset();
 	_pGenerator = nullptr;
 }
@@ -136,6 +123,7 @@ void SPDIFAudioSampleRenderer::Stop(void)
 void SPDIFAudioSampleRenderer::Pause(void)
 {
 	CriticalSection cs;
+
 	_pause = !_pause;
 }
 
@@ -147,12 +135,14 @@ bool SPDIFAudioSampleRenderer::IsPaused(void) const
 bool SPDIFAudioSampleRenderer::IsRunning(void) const
 {
 	CriticalSection cs;
+
 	return _running;
 }
 
 uint32_t SPDIFAudioSampleRenderer::GetSampleCount(void) const
 {
 	CriticalSection cs;
+
 	return _sampleCount;
 }
 
@@ -164,6 +154,7 @@ uint32_t SPDIFAudioSampleRenderer::GetSamplingRate(void) const
 void SPDIFAudioSampleRenderer::ResetPeakLevel(unsigned& left, unsigned& right)
 {
 	CriticalSection cs;
+
 	left = _peakLevelL << 8;
 	right = _peakLevelR << 8;
 	_peakLevelL = 0;
@@ -172,13 +163,12 @@ void SPDIFAudioSampleRenderer::ResetPeakLevel(unsigned& left, unsigned& right)
 
 void SPDIFAudioSampleRenderer::dmaTransferCompleted(void* pContext)
 {
-	SPDIFAudioSampleRenderer& This = *static_cast<SPDIFAudioSampleRenderer*>(pContext);
-	for (int i = 0; i < 2; ++i)
+	auto& This = *static_cast<SPDIFAudioSampleRenderer*>(pContext);
+	for (auto i = 0; i < 2; ++i)
 	{
 		auto& dmaChannelInfo = This._dmaDoubleBufferInfo.Channels[i];
 		This.bufferSamplesForDMA(dmaChannelInfo.IO, i);
 	}
-	This._lrClockTimer.INTCTRLA = TC_OVFINTLVL_LO_gc;
 }
 
 void SPDIFAudioSampleRenderer::bufferSamplesForDMA(volatile DMA_CH_t& dmaCh, uint8_t bufferNumber)
@@ -190,8 +180,8 @@ void SPDIFAudioSampleRenderer::bufferSamplesForDMA(volatile DMA_CH_t& dmaCh, uin
 
 	dmaCh.CTRLB |= DMA_CH_TRNIF_bm;
 
-	uint8_t peakLevelL = _peakLevelL;
-	uint8_t peakLevelR = _peakLevelR;
+	auto peakLevelL = _peakLevelL;
+	auto peakLevelR = _peakLevelR;
 	
 	Audio::SampleData samples[SampleCountEachDMABuffer];
 
@@ -201,7 +191,6 @@ void SPDIFAudioSampleRenderer::bufferSamplesForDMA(volatile DMA_CH_t& dmaCh, uin
 		peakLevelL = 0;
 		peakLevelR = 0;
 	}
-
 	else
 	{
 		auto readedSampleCount = _buffer.ReadNext(samples, SampleCountEachDMABuffer);
@@ -209,7 +198,7 @@ void SPDIFAudioSampleRenderer::bufferSamplesForDMA(volatile DMA_CH_t& dmaCh, uin
 		{
 			if (readedSampleCount == 0)
 			{
-				if (!_buffer.IsRunning() && (_pGenerator == nullptr || !_pGenerator->IsRunning()))
+				if (_pGenerator == nullptr || !_pGenerator->IsRunning())
 				{
 					_running = false;
 				}
@@ -225,33 +214,59 @@ void SPDIFAudioSampleRenderer::bufferSamplesForDMA(volatile DMA_CH_t& dmaCh, uin
 void SPDIFAudioSampleRenderer::timerOverflow(void* pContext)
 {
 	auto& This = *static_cast<SPDIFAudioSampleRenderer*>(pContext);
-	This._lrClockTimer.INTCTRLA = TC_OVFINTLVL_OFF_gc;
 	if (This._pGenerator != nullptr)
 	{
 		This._buffer.Fill(*This._pGenerator);
 	}		
 }
 
-void SPDIFAudioSampleRenderer::initDMA(volatile DMA_CH_t& dmaChannel, const USARTInfo& usartInfo, SPDIFFrame spdifFrame[], size_t sampleCount)
+void SPDIFAudioSampleRenderer::startDMA(void)
 {
-	memset(spdifFrame, 0, sizeof(SPDIFFrame) * sampleCount);
-	
-	dmaChannel.SRCADDR0 = static_cast<uint8_t>((reinterpret_cast<uint16_t>(spdifFrame) >> 0) & 0xff);
-	dmaChannel.SRCADDR1 = static_cast<uint8_t>((reinterpret_cast<uint16_t>(spdifFrame) >> 8) & 0xff);
-#if defined(DMA_CH0_SRCADDR2)
-	dmaChannel.SRCADDR2 = 0;
-#endif
-	dmaChannel.DESTADDR0 = static_cast<uint8_t>((reinterpret_cast<uint16_t>(&usartInfo.GetUSART()) >> 0) & 0xff);
-	dmaChannel.DESTADDR1 = static_cast<uint8_t>((reinterpret_cast<uint16_t>(&usartInfo.GetUSART()) >> 8) & 0xff);
-#if defined(DMA_CH0_DESTADDR2)
-	dmaChannel.DESTADDR2 = 0;
-#endif
-	dmaChannel.ADDRCTRL = DMA_CH_SRCRELOAD_BLOCK_gc | DMA_CH_SRCDIR_INC_gc | DMA_CH_DESTRELOAD_BURST_gc | DMA_CH_DESTDIR_FIXED_gc;
-	dmaChannel.TRFCNT = sizeof(SPDIFFrame) * sampleCount;
-	dmaChannel.REPCNT = 0;
-	dmaChannel.TRIGSRC = usartInfo.GetDREDMATriggerSource();
+	USARTInfo dataUSARTInfo(_dataUSART);
 
-	dmaChannel.CTRLA = DMA_CH_BURSTLEN_1BYTE_gc | DMA_CH_SINGLE_bm | DMA_CH_REPEAT_bm;
-	dmaChannel.CTRLB = DMA_CH_TRNINTLVL_HI_gc;
+	for (auto i = 0; i < 2; ++i)
+	{
+		auto& dmaChannel = _dmaDoubleBufferInfo.Channels[i].IO;
+		memset(_DMABuffer[i], 0, sizeof(SPDIFFrame) * SampleCountEachDMABuffer);
+	
+		dmaChannel.SRCADDR0 = static_cast<uint8_t>((reinterpret_cast<uint16_t>(_DMABuffer[i]) >> 0) & 0xff);
+		dmaChannel.SRCADDR1 = static_cast<uint8_t>((reinterpret_cast<uint16_t>(_DMABuffer[i]) >> 8) & 0xff);
+		#if defined(DMA_CH0_SRCADDR2)
+		dmaChannel.SRCADDR2 = 0;
+		#endif
+		dmaChannel.DESTADDR0 = static_cast<uint8_t>((reinterpret_cast<uint16_t>(&dataUSARTInfo.GetUSART()) >> 0) & 0xff);
+		dmaChannel.DESTADDR1 = static_cast<uint8_t>((reinterpret_cast<uint16_t>(&dataUSARTInfo.GetUSART()) >> 8) & 0xff);
+		#if defined(DMA_CH0_DESTADDR2)
+		dmaChannel.DESTADDR2 = 0;
+		#endif
+		dmaChannel.ADDRCTRL = DMA_CH_SRCRELOAD_BLOCK_gc | DMA_CH_SRCDIR_INC_gc | DMA_CH_DESTRELOAD_BURST_gc | DMA_CH_DESTDIR_FIXED_gc;
+		dmaChannel.TRFCNT = sizeof(SPDIFFrame) * SampleCountEachDMABuffer;
+		dmaChannel.REPCNT = 0;
+		dmaChannel.TRIGSRC = dataUSARTInfo.GetDREDMATriggerSource();
+
+		dmaChannel.CTRLA = DMA_CH_BURSTLEN_1BYTE_gc | DMA_CH_SINGLE_bm | DMA_CH_REPEAT_bm;
+		dmaChannel.CTRLB = DMA_CH_TRNINTLVL_HI_gc;
+	}
+
+	DMA_CTRL |= DMA_ENABLE_bm | _dmaDoubleBufferInfo.dbufMode;
+	auto& firstDmaChannel = _dmaDoubleBufferInfo.Channels[0].IO;
+	#if defined(DMA_CH_CHEN_bm)
+	firstDmaChannel.CTRLA |= DMA_CH_CHEN_bm;
+	#else
+	firstDmaChannel.CTRLA |= DMA_CH_ENABLE_bm;
+	#endif
 }
 
+void SPDIFAudioSampleRenderer::stopDMA(void)
+{
+	DMA_CTRL &=  ~_dmaDoubleBufferInfo.dbufMode | ~DMA_ENABLE_bm;
+	for (auto i = 0; i < 2; ++i)
+	{
+		auto& dmaChannelIO = _dmaDoubleBufferInfo.Channels[i].IO;
+		#if defined(DMA_CH_CHEN_bm)
+		dmaChannelIO.CTRLA &= ~DMA_CH_CHEN_bm;
+		#else
+		dmaChannelIO.CTRLA &= ~DMA_CH_ENABLE_bm;
+		#endif
+	}
+}

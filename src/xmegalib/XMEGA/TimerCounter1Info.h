@@ -15,7 +15,7 @@ namespace XMEGA
 	class TimerCounter1Info
 	{
 	public:
-		TimerCounter1Info(TC1_t& timer);	
+		TimerCounter1Info(volatile TC1_t& timer);	
 
 		TC1_t& GetTimer(void) const
 		{

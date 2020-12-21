@@ -14,7 +14,9 @@ namespace XMEGA
 	class USARTInfo
 	{
 	public:
-		USARTInfo(USART_t& usart);	
+//		USARTInfo(const USART_t& usart);	
+
+		USARTInfo(volatile USART_t& usart);
 		
 		USART_t& GetUSART(void) const
 		{

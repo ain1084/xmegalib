@@ -31,12 +31,12 @@ uint32_t SampleGenerator::GetTotalSampleCount(void) const
 
 void SampleGenerator::Reset(void)
 {
-	_file.Seek(IFile::Seek_Top, _headerInfo.dataOffset & ~(SECTOR_SIZE - 1));
+	_file.Seek(IFile::Seek_Top, _headerInfo.dataOffset);
 	uint16_t offsetInSector = static_cast<uint16_t>(_headerInfo.dataOffset & (SECTOR_SIZE - 1));
 	if (readNextSector(offsetInSector, _headerInfo.dataCount))
 	{
 		CriticalSection cs;
-		_dataSizeCountdown = _headerInfo.dataCount;
+		_dataSizeCountdown = _headerInfo.dataCount - _bufferRemain;
 	}		
 }
 
@@ -109,17 +109,15 @@ unsigned SampleGenerator::ReadNext(SampleData* pBuffer, unsigned requestSampleCo
 	return reinterpret_cast<SampleData*>(pInt16Buffer) - pBuffer;
 }
 
-bool SampleGenerator::readNextSector(uint_fast16_t offsetInSector, uint_fast32_t dataSizeCount)
+bool SampleGenerator::readNextSector(uint_fast16_t offsetInSector, uint_fast32_t maxSize)
 {
-	if (!_file.Read(_buffer, SECTOR_SIZE))
+	auto readSize = sizeof(_buffer) - offsetInSector;
+	if (readSize > maxSize)
 	{
-		return false;
+		readSize = maxSize;
 	}
-	_bufferRemain = SECTOR_SIZE - offsetInSector;
-	if (_bufferRemain > dataSizeCount)
-	{
-		_bufferRemain = static_cast<uint16_t>(dataSizeCount);
-	}
-	_pReadNext = _buffer + offsetInSector;
-	return true;
+	auto readed = _file.Read(_buffer, readSize);
+	_bufferRemain = readed;
+	_pReadNext = _buffer;
+	return readed != 0;
 }

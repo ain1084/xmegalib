@@ -6,9 +6,6 @@
  */
 
 #include "Platform.h"
-#include <stddef.h>
-#include <avr/io.h>
-#include <avr/pgmspace.h>
 #include "ISystemClockNotify.h"
 #include "SystemClock.h"
 

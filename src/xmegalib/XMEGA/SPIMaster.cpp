@@ -5,9 +5,8 @@
  *  Author: Seiji Ainoguchi
  */ 
 
-#include <avr/io.h>
-#include <avr/pgmspace.h>
 #include <string.h>
+#include "Platform.h"
 #include "SystemClock.h"
 #include "SPIMaster.h"
 

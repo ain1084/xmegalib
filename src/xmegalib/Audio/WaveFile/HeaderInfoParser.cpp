@@ -5,12 +5,12 @@
  *  Author: Seiji Ainoguchi
  */ 
 
-#include <Platform.h>
 #include <string.h>
-#include <Collections/Vector.h>
-#include <Utilities/BasicString.h>
-#include <FileSystem/IFile.h>
-#include <Audio/Metadata.h>
+#include "Platform.h"
+#include "Collections/Vector.h"
+#include "Utilities/BasicString.h"
+#include "FileSystem/IFile.h"
+#include "Audio/Metadata.h"
 #include "HeaderInfo.h"
 #include "HeaderInfoParser.h"
 

@@ -7,7 +7,6 @@
 
 #include "Platform.h"
 #include <string.h>
-#include <avr/io.h>
 #include "CriticalSection.h"
 #include "InterruptController.h"
 
